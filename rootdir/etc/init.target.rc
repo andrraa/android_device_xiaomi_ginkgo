@@ -94,6 +94,9 @@ on late-fs
     exec_start wait_for_keymaster
     mount_all /vendor/etc/fstab.qcom --late
 
+    # turn off vblank irq immediately after turning off
+    write /sys/module/drm/parameters/vblankoffdelay -1
+
 service sec_nvm /vendor/bin/sec_nvm
     class core
     user system
