@@ -787,4 +787,7 @@
     <string-array name="config_deviceKeyHandlerClasses" translatable="false">
         <item>me.nusantaraproject.keyhandler.KeyHandler</item>
     </string-array>
+
+    <!-- Whether device ignores the RSSNR signal implementation -->
+    <bool name="config_ignoreRssnrSignalLevel">true</bool>
 </resources>
