@@ -51,3 +51,4 @@
 # and fails if it does not find it.
 /dev/block/bootdevice/by-name/misc                      /misc                    emmc    defaults                                             defaults
 /dev/block/zram0                                        none               swap    defaults                                             zramsize=2147483648,max_comp_streams=8,zram_loopback_path=/data/per_boot/zram_swap,zram_loopback_size=512M
+/dev/block/by-name/metadata                             /metadata                ext4    noatime,nosuid,nodev,discard               wait,formattable,wrappedkey
