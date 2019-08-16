@@ -192,7 +192,7 @@ on boot
     chown system system /sys/devices/platform/kcal_ctrl.0/kcal_cont
     chmod 0660 /sys/devices/platform/kcal_ctrl.0/kcal_cont
 
-    #Load WLAN driver
+    # Load WLAN driver
     chown wifi wifi /sys/module/wlan/parameters/fwpath
 
     # Thermal Profile
@@ -204,6 +204,10 @@ on boot
     setprop vendor.usb.rmnet.inst.name "rmnet"
     setprop vendor.usb.dpl.inst.name "dpl"
     setprop sys.usb.configfs 1
+	
+    # Vibration
+    chown system system /sys/class/leds/vibrator/vtg_level
+    chmod 0660 /sys/class/leds/vibrator/vtg_level
 
 #pd-mapper
 service vendor.pd_mapper /vendor/bin/pd-mapper
