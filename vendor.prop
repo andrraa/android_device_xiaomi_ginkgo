@@ -217,3 +217,8 @@ ro.surface_flinger.use_color_management=1
 
 # Time
 persist.vendor.delta_time.enable=true
+
+# ZRAM writeback
+ro.zram.mark_idle_delay_mins=60
+ro.zram.first_wb_delay_mins=180
+ro.zram.periodic_wb_delay_hours=24
