@@ -896,6 +896,12 @@ service vendor.hbtp /vendor/bin/hbtp_daemon
 on property:vendor.chre.enabled=0
    stop chre
 
+on property:vendor.media.target.version=*
+   setprop vendor.sys.media.target.version ${vendor.media.target.version}
+
+on property:vendor.netflix.bsp_rev=*
+   setprop ro.netflix.bsp_rev ${vendor.netflix.bsp_rev}
+
 service bugreport /system/bin/dumpstate -d -p -B -z -o /data/user_de/0/com.android.shell/files/bugreports/bugreport
     class main
     disabled
