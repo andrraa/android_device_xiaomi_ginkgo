@@ -30,4 +30,7 @@
     <string name="config_batDesCap">/sys/class/power_supply/bms/charge_full_design</string>
     <string name="config_batCurCap">/sys/class/power_supply/bms/charge_full</string>
     <string name="config_batChargeCycle">/sys/class/power_supply/bms/cycle_count</string>
+
+    <!-- Whether hardware revision should be shown or not. -->
+    <bool name="config_show_hardware_revision">false</bool>
 </resources>
