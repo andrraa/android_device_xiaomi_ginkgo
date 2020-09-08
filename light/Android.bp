@@ -17,6 +17,7 @@ cc_binary {
     defaults: ["hidl_defaults"],
     name: "android.hardware.light@2.0-service.ginkgo",
     proprietary: true,
+    vintf_fragments: ["android.hardware.light@2.0-service.ginkgo.xml"],
     init_rc: ["android.hardware.light@2.0-service.ginkgo.rc"],
     srcs: ["service.cpp", "Light.cpp"],
     shared_libs: [
