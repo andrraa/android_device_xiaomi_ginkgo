@@ -1724,11 +1724,12 @@ bool SystemStatus::setDefaultGnssEngineStates(void)
 @return     true when successfully done
 ******************************************************************************/
 bool SystemStatus::eventConnectionStatus(bool connected, int8_t type,
-                                         bool roaming, NetworkHandle networkHandle)
+                                         bool roaming, NetworkHandle networkHandle,
+                                         string& apn)
 {
     // send networkinof dataitem to systemstatus observer clients
     SystemStatusNetworkInfo s(type, "", "", connected, roaming,
-                              (uint64_t) networkHandle);
+                              (uint64_t) networkHandle, apn);
     mSysStatusObsvr.notify({&s});
 
     return true;
