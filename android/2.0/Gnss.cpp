@@ -510,7 +510,7 @@ Return<bool> Gnss::setPositionMode_1_1(V1_0::IGnss::GnssPositionMode mode,
     GnssAPIClient* api = getApi();
     if (api) {
         GnssPowerMode powerMode;
-
+        updateCallbacksIfGnssStatusCbReg(api);
         // In non-android case override the powermode based on
         // preferredAccuracyMeters
         if (preferredAccuracyMeters > HIGH_ACCURACY_THRESHOLD || lowPowerMode) {
