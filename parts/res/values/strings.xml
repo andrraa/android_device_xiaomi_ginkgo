@@ -128,4 +128,17 @@
     <string name="edit_value">Choose new Value</string>
     <string name="default_value">Default Value</string>
     <string name="edit_hint">Value between %1$d and %2$d</string>
+    
+    <!-- Selinux Switch -->
+    <string name="selinux_explanation_summary">SELinux is a set of kernel modifications and user-space tools. Use this at your own risk.\n(NB: If the following options are grayed out, your phone is not rooted and you need to flash magisk to use this feature.)</string>
+    <string name="selinux_category">SELinux</string>
+    <string name="selinux_mode_title">SELinux mode</string>
+    <string name="selinux_permissive_summary">Permissive</string>
+    <string name="selinux_enforcing_summary">Enforcing</string>
+    <string name="selinux_persistence_title">Persist across reboots</string>
+    <string name="selinux_persistence_summary">Restore the above set sepolicy mode on each boot</string>
+    <string name="selinux_permissive_toast_title">Selinux set to permissive!</string>
+    <string name="selinux_enforcing_toast_title">Selinux set to enforcing!</string>
+    <string name="cannot_get_su">Action failed because of missing superuser access</string>
+
 </resources>
