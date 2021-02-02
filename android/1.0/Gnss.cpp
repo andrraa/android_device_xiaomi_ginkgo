@@ -89,9 +89,6 @@ GnssAPIClient* Gnss::getApi() {
             mApi->gnssConfigurationUpdate(mPendingConfig);
             // clear size to invalid mPendingConfig
             mPendingConfig.size = 0;
-            if (mPendingConfig.assistanceServer.hostName != nullptr) {
-                free((void*)mPendingConfig.assistanceServer.hostName);
-            }
         }
     }
     if (mApi == nullptr) {
@@ -168,9 +165,9 @@ Return<bool> Gnss::updateConfiguration(GnssConfig& gnssConfig) {
             mPendingConfig.assistanceServer.type = gnssConfig.assistanceServer.type;
             if (mPendingConfig.assistanceServer.hostName != nullptr) {
                 free((void*)mPendingConfig.assistanceServer.hostName);
-                mPendingConfig.assistanceServer.hostName =
-                    strdup(gnssConfig.assistanceServer.hostName);
             }
+            mPendingConfig.assistanceServer.hostName =
+                strdup(gnssConfig.assistanceServer.hostName);
             mPendingConfig.assistanceServer.port = gnssConfig.assistanceServer.port;
         }
         if (gnssConfig.flags & GNSS_CONFIG_FLAGS_LPP_PROFILE_VALID_BIT) {
