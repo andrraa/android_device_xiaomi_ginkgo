@@ -34,7 +34,7 @@ typedef const GnssInterface* (getLocationInterface)();
 
 #define IMAGES_INFO_FILE "/sys/devices/soc0/images"
 #define DELIMITER ";"
-#define MAX_GNSS_ACCURACY_ALLOWED 10000
+#define HIGH_ACCURACY_THRESHOLD 100
 namespace android {
 namespace hardware {
 namespace gnss {
@@ -509,9 +509,16 @@ Return<bool> Gnss::setPositionMode_1_1(V1_0::IGnss::GnssPositionMode mode,
     bool retVal = false;
     GnssAPIClient* api = getApi();
     if (api) {
+        GnssPowerMode powerMode;
         updateCallbacksIfGnssStatusCbReg(api);
-        GnssPowerMode powerMode = lowPowerMode?
-                GNSS_POWER_MODE_M4 : GNSS_POWER_MODE_M2;
+        // In non-android case override the powermode based on
+        // preferredAccuracyMeters
+        if (preferredAccuracyMeters > HIGH_ACCURACY_THRESHOLD || lowPowerMode) {
+            powerMode = GNSS_POWER_MODE_M4;
+        } else {
+            powerMode = GNSS_POWER_MODE_M2;
+        }
+
         retVal = api->gnssSetPositionMode(mode, recurrence, minIntervalMs,
                 preferredAccuracyMeters, preferredTimeMs, powerMode, minIntervalMs);
     }

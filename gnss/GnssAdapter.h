@@ -39,6 +39,7 @@
 #include <XtraSystemStatusObserver.h>
 #include <map>
 #include <functional>
+#include <NativeAgpsHandler.h>
 
 #define MAX_URL_LEN 256
 #define NMEA_SENTENCE_MAX_LENGTH 200
@@ -221,6 +222,9 @@ class GnssAdapter : public LocAdapterBase {
     BlockCPIInfo mBlockCPIInfo;
     bool mPowerOn;
     uint32_t mAllowFlpNetworkFixes;
+
+    /* === NativeAgpsHandler ======================================================== */
+    NativeAgpsHandler mNativeAgpsHandler;
 
     /* === Misc callback from QMI LOC API ============================================== */
     GnssEnergyConsumedCallback mGnssEnergyConsumedCb;
