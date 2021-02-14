@@ -419,6 +419,11 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES += \
     textclassifier.bundle1
 
+# Soong namespace
+PRODUCT_SOONG_NAMESPACES += \
+    $(LOCAL_PATH) \
+    kernel/xiaomi/ginkgo
+
 # Telephony
 PRODUCT_PACKAGES += \
     qti-telephony-hidl-wrapper \
