@@ -1,6 +1,10 @@
 # ART
 ro.sys.fw.dex2oat_thread_count=8
 
+# Audio
+audio.sys.noisy.broadcast.delay=600
+audio.sys.offload.pstimeout.secs=3
+
 # Bluetooth
 persist.bluetooth.bqr.event_mask=14
 persist.bluetooth.bqr.min_interval_ms=500
@@ -55,6 +59,9 @@ vendor.mm.enable.qcom_parser=63963135
 
 # Netflix
 ro.netflix.bsp_rev=Q6125-17995-1
+
+# NFC
+ro.se.type=HCE,UICC
 
 # ParanoidDoze
 ro.sensor.proximity=true

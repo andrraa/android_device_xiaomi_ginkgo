@@ -1,12 +1,16 @@
 #!/bin/bash
 #
-# Copyright (C) 2018-2019 The LineageOS Project
-# Copyright (C) 2020 Paranoid Android
+# Copyright (C) 2021 The NusantaraProject-ROM
 #
 # SPDX-License-Identifier: Apache-2.0
 #
 
 set -e
+
+DEVICE=ginkgo
+VENDOR=xiaomi
+
+INITIAL_COPYRIGHT_YEAR=2019
 
 # Load extract_utils and do some sanity checks
 MY_DIR="${BASH_SOURCE%/*}"
@@ -21,50 +25,13 @@ if [ ! -f "${HELPER}" ]; then
 fi
 source "${HELPER}"
 
-if [ -z $ONLY_DEVICE ]; then
-    ONLY_DEVICE=false
-fi
+# Initialize the helper
+setup_vendor "${DEVICE}" "${VENDOR}" "${ARROW_ROOT}"
 
-if [ -z $ONLY_COMMON ]; then
-    ONLY_COMMON=false
-fi
+# Copyright headers and guards
+write_headers
 
-while [ "${#}" -gt 0 ]; do
-    case "${1}" in
-        -o | --only-common )
-                ONLY_COMMON=true
-                ;;
-        -d | --only-device )
-                ONLY_DEVICE=true
-                ;;
-    esac
-    shift
-done
+write_makefiles "${MY_DIR}/proprietary-files.txt" true
 
-if [ "$ONLY_DEVICE" == "false" ] && [ -s "${MY_DIR}/proprietary-files.txt" ]; then
-    # Initialize the helper for common
-    setup_vendor "${DEVICE_COMMON}" "${VENDOR}" "${ARROW_ROOT}" true
-
-    # Copyright headers and guards
-    write_headers "ginkgo laurel_sprout"
-
-    # The standard common blobs
-    write_makefiles "${MY_DIR}/proprietary-files.txt" true
-
-    # Finish
-    write_footers
-fi
-
-if [ "$ONLY_COMMON" == "false" ] && [ -s "${MY_DIR}/../${DEVICE}/proprietary-files.txt" ]; then
-    # Reinitialize the helper for device
-    setup_vendor "${DEVICE}" "${VENDOR}" "${ARROW_ROOT}" false
-
-    # Copyright headers and guards
-    write_headers
-
-    # The standard device blobs
-    write_makefiles "${MY_DIR}/../${DEVICE}/proprietary-files.txt" true
-
-    # Finish
-    write_footers
-fi
+# Finish
+write_footers
