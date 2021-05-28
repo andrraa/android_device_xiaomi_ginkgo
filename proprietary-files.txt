@@ -1356,7 +1356,6 @@ vendor/lib64/libcdsprpc.so
 vendor/lib64/libcdsp_default_listener.so
 
 # Charger
-bin/charger
 vendor/bin/hvdcp_opti
 vendor/bin/init.qti.chg_policy.sh
 vendor/etc/charger_fstab.qti
