@@ -5,9 +5,9 @@
 #
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/arrow_ginkgo.mk
+    $(LOCAL_DIR)/nad_ginkgo.mk
 
 COMMON_LUNCH_CHOICES := \
-    arrow_ginkgo-user \
-    arrow_ginkgo-userdebug \
-    arrow_ginkgo-eng
+    nad_ginkgo-user \
+    nad_ginkgo-userdebug \
+    nad_ginkgo-eng

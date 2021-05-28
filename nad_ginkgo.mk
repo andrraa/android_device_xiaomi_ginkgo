@@ -24,14 +24,14 @@ $(call inherit-product, $(SRC_TARGET_DIR)/product/product_launched_with_p.mk)
 $(call inherit-product, device/xiaomi/ginkgo/device.mk)
 
 # Inherit some common ArrowOS stuff
+NAD_BUILD_TYPE := OFFICIAL
 TARGET_BOOT_ANIMATION_RES := 1080
-$(call inherit-product, vendor/arrow/config/common.mk)
+$(call inherit-product, vendor/nusantara/config/common_full_phone.mk)
 
 # Device identifier
-PRODUCT_NAME := arrow_ginkgo
+PRODUCT_NAME := nad_ginkgo
 PRODUCT_DEVICE := ginkgo
 PRODUCT_BRAND := Xiaomi
 PRODUCT_MODEL := Redmi Note 8
 PRODUCT_MANUFACTURER := Xiaomi
 PRODUCT_GMS_CLIENTID_BASE := android-xiaomi
-DEVICE_MAINTAINER := Adithya R
