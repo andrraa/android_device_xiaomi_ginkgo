@@ -74,7 +74,7 @@ function 8937_sched_dcvs_eas()
 
 function configure_automotive_sku_parameters() {
 
-    echo 864000 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+    echo 1036800 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
     echo 1056000 > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
     echo 1171200 > /sys/devices/system/cpu/cpu7/cpufreq/scaling_min_freq
     echo 1785600 > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
