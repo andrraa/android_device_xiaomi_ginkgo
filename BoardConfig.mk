@@ -176,9 +176,6 @@ TARGET_BOARD_PLATFORM := trinket
 TARGET_BOARD_PLATFORM_GPU := qcom-adreno610
 TRINKET := trinket
 
-# Power
-BOARD_POWER_CUSTOM_BOARD_LIB := libpower_ginkgo
-
 # Properties
 TARGET_SYSTEM_PROP += $(DEVICE_PATH)/system.prop
 TARGET_VENDOR_PROP += $(DEVICE_PATH)/vendor.prop
