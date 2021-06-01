@@ -2233,7 +2233,7 @@ vendor/lib64/vendor.qti.hardware.soter@1.0.so
 vendor/bin/thermal-engine
 vendor/etc/thermal-engine-camera.conf
 vendor/etc/thermal-engine-map.conf
-vendor/etc/thermal-engine-normal.conf
+vendor/etc/thermal-engine-normal.conf|9edbe3241da1d26e9b0905ae6c58c28a529737cc
 vendor/etc/thermal-engine.conf
 vendor/lib/hw/thermal.trinket.so
 vendor/lib/libthermalclient.so
