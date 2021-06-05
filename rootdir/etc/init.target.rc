@@ -171,44 +171,21 @@ on boot
     chown system system /sys/class/leds/led:switch_0/brightness
     chown system system /sys/class/leds/led:switch_1/brightness
     chown system system /sys/class/leds/flashlight/brightness
-
-    # DT2W
-    chown system system /proc/tp_gesture
-    chmod 0660 /proc/tp_gesture
-
+	
     # access permissions for FPC service
     chown system system /sys/bus/platform/devices/soc/soc:fpc1020/irq
     chown system system /sys/bus/platform/devices/soc/soc:fpc1020/wakeup_enable
     chmod 0666 /dev/qseecom
-
-    # KCAL
-    chown system system /sys/devices/platform/kcal_ctrl.0/kcal_enable
-    chmod 0660 /sys/devices/platform/kcal_ctrl.0/kcal_enable
-    chown system system /sys/devices/platform/kcal_ctrl.0/kcal
-    chmod 0660 /sys/devices/platform/kcal_ctrl.0/kcal
-    chown system system /sys/devices/platform/kcal_ctrl.0/kcal_sat
-    chmod 0660 /sys/devices/platform/kcal_ctrl.0/kcal_sat
-    chown system system /sys/devices/platform/kcal_ctrl.0/kcal_val
-    chmod 0660 /sys/devices/platform/kcal_ctrl.0/kcal_val
-    chown system system /sys/devices/platform/kcal_ctrl.0/kcal_cont
-    chmod 0660 /sys/devices/platform/kcal_ctrl.0/kcal_cont
-
+	
     # Load WLAN driver
     chown wifi wifi /sys/module/wlan/parameters/fwpath
-
-    # Thermal Profile
-    write /sys/class/thermal/thermal_message/sconfig 0
-
-    #USB controller configuration
+	
+    # USB controller configuration
     setprop vendor.usb.rndis.func.name "gsi"
     setprop vendor.usb.rmnet.func.name "gsi"
     setprop vendor.usb.rmnet.inst.name "rmnet"
     setprop vendor.usb.dpl.inst.name "dpl"
     setprop sys.usb.configfs 1
-	
-    # Vibration
-    chown system system /sys/class/leds/vibrator/vtg_level
-    chmod 0660 /sys/class/leds/vibrator/vtg_level
 
 #pd-mapper
 service vendor.pd_mapper /vendor/bin/pd-mapper

@@ -1,0 +1,47 @@
+#
+# Custom ginkgo-specific init script
+#
+
+on boot
+    # DT2W
+    chown system system /proc/tp_gesture
+    chmod 0660 /proc/tp_gesture
+
+    # KCAL
+    chown system system /sys/devices/platform/kcal_ctrl.0/kcal_cont
+    chown system system /sys/devices/platform/kcal_ctrl.0/kcal_enable
+    chown system system /sys/devices/platform/kcal_ctrl.0/kcal_hue
+    chown system system /sys/devices/platform/kcal_ctrl.0/kcal_sat
+    chown system system /sys/devices/platform/kcal_ctrl.0/kcal_val
+    chown system system /sys/devices/platform/kcal_ctrl.0/kcal_min
+    chown system system /sys/devices/platform/kcal_ctrl.0/kcal
+    chmod 660 /sys/devices/platform/kcal_ctrl.0/kcal_cont
+    chmod 660 /sys/devices/platform/kcal_ctrl.0/kcal_enable
+    chmod 660 /sys/devices/platform/kcal_ctrl.0/kcal_hue
+    chmod 660 /sys/devices/platform/kcal_ctrl.0/kcal_sat
+    chmod 660 /sys/devices/platform/kcal_ctrl.0/kcal_val
+    chmod 660 /sys/devices/platform/kcal_ctrl.0/kcal_min
+    chmod 660 /sys/devices/platform/kcal_ctrl.0/kcal
+
+    # Thermal Profile
+    write /sys/class/thermal/thermal_message/sconfig 0
+
+    # Vibration
+    chown system system /sys/class/leds/vibrator/vtg_level
+    chmod 0660 /sys/class/leds/vibrator/vtg_level
+	
+    # USB Fastcharge
+    chown system system /sys/kernel/fast_charge/force_fast_charge
+    chmod 0660 /sys/kernel/fast_charge/force_fast_charge
+
+on property:vendor.post_boot.parsed=1
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/up_rate_limit_us 1000
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/down_rate_limit_us 1000
+    write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/iowait_boost_enable 0
+    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 864000
+
+    write /sys/devices/system/cpu/cpu4/cpufreq/schedutil/up_rate_limit_us 1000
+    write /sys/devices/system/cpu/cpu4/cpufreq/schedutil/down_rate_limit_us 1000
+    write /sys/devices/system/cpu/cpu4/cpufreq/schedutil/iowait_boost_enable 0
+    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 652800
+	
