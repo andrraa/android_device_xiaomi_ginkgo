@@ -22,17 +22,21 @@ on boot
     chmod 660 /sys/devices/platform/kcal_ctrl.0/kcal_val
     chmod 660 /sys/devices/platform/kcal_ctrl.0/kcal_min
     chmod 660 /sys/devices/platform/kcal_ctrl.0/kcal
+	
+    # Kernelspace battery saver
+    chown system system /sys/module/battery_saver/parameters/enabled
+    chmod 0660 /sys/module/battery_saver/parameters/enabled
 
     # Thermal Profile
     write /sys/class/thermal/thermal_message/sconfig 0
 
-    # Vibration
-    chown system system /sys/class/leds/vibrator/vtg_level
-    chmod 0660 /sys/class/leds/vibrator/vtg_level
-	
     # USB Fastcharge
     chown system system /sys/kernel/fast_charge/force_fast_charge
     chmod 0660 /sys/kernel/fast_charge/force_fast_charge
+
+    # Vibration
+    chown system system /sys/class/leds/vibrator/vtg_level
+    chmod 0660 /sys/class/leds/vibrator/vtg_level
 
 on property:vendor.post_boot.parsed=1
     write /sys/devices/system/cpu/cpu0/cpufreq/schedutil/up_rate_limit_us 1000
