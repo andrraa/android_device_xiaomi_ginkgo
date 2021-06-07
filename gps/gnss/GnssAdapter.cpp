@@ -46,6 +46,7 @@
 #include <Agps.h>
 #include <SystemStatus.h>
 #include <vector>
+#include "loc_misc_utils.h"
 
 #define RAD2DEG    (180.0 / M_PI)
 #define PROCESS_NAME_ENGINE_SERVICE "engine-service"
@@ -102,7 +103,8 @@ GnssAdapter::GnssAdapter() :
     mGnssMbSvIdUsedInPosition{},
     mGnssMbSvIdUsedInPosAvail(false),
     mSupportNfwControl(true),
-    mSystemPowerState(POWER_STATE_UNKNOWN)
+    mSystemPowerState(POWER_STATE_UNKNOWN),
+    mNativeAgpsHandler(mSystemStatus->getOsObserver(), *this)
 {
     LOC_LOGD("%s]: Constructor %p", __func__, this);
     mLocPositionMode.mode = LOC_POSITION_MODE_INVALID;
@@ -258,6 +260,11 @@ GnssAdapter::convertLocation(Location& out, const UlpLocation& ulpLocation,
     if (LOC_GPS_LOCATION_HAS_SPOOF_MASK & ulpLocation.gpsLocation.flags) {
         out.flags |= LOCATION_HAS_SPOOF_MASK;
         out.spoofMask = ulpLocation.gpsLocation.spoof_mask;
+    }
+    if (LOC_GPS_LOCATION_HAS_ELAPSED_REAL_TIME & ulpLocation.gpsLocation.flags) {
+        out.flags |= LOCATION_HAS_ELAPSED_REAL_TIME;
+        out.elapsedRealTime = ulpLocation.gpsLocation.elapsedRealTime;
+        out.elapsedRealTimeUnc = ulpLocation.gpsLocation.elapsedRealTimeUnc;
     }
 }
 
@@ -2475,15 +2482,15 @@ GnssAdapter::reportPowerStateIfChanged()
 }
 
 void
-GnssAdapter::getPowerStateChangesCommand(void* powerStateCb)
+GnssAdapter::getPowerStateChangesCommand(std::function<void(bool)> powerStateCb)
 {
     LOC_LOGD("%s]: ", __func__);
 
     struct MsgReportLocation : public LocMsg {
         GnssAdapter& mAdapter;
-        powerStateCallback mPowerStateCb;
+        std::function<void(bool)> mPowerStateCb;
         inline MsgReportLocation(GnssAdapter& adapter,
-                                 powerStateCallback powerStateCb) :
+                                 std::function<void(bool)> powerStateCb) :
             LocMsg(),
             mAdapter(adapter),
             mPowerStateCb(powerStateCb) {}
@@ -2493,7 +2500,7 @@ GnssAdapter::getPowerStateChangesCommand(void* powerStateCb)
         }
     };
 
-    sendMsg(new MsgReportLocation(*this, (powerStateCallback)powerStateCb));
+    sendMsg(new MsgReportLocation(*this, powerStateCb));
 }
 
 void
@@ -3832,6 +3839,10 @@ GnssAdapter::reportNmea(const char* nmea, size_t length)
             it->second.gnssNmeaCb(nmeaNotification);
         }
     }
+
+    if (isNMEAPrintEnabled()) {
+        LOC_LOGd("[%" PRId64 ", %zu] %s", now, length, nmea);
+    }
 }
 
 void
@@ -4436,22 +4447,19 @@ GnssAdapter::reportGnssEngEnergyConsumedEvent(uint64_t energyConsumedSinceFirstB
 
 void GnssAdapter::initDefaultAgps() {
     LOC_LOGD("%s]: ", __func__);
-
     void *handle = nullptr;
-    if ((handle = dlopen("libloc_net_iface.so", RTLD_NOW)) == nullptr) {
-        LOC_LOGD("%s]: libloc_net_iface.so not found !", __func__);
-        return;
-    }
 
-    LocAgpsGetAgpsCbInfo getAgpsCbInfo = (LocAgpsGetAgpsCbInfo)
-            dlsym(handle, "LocNetIfaceAgps_getAgpsCbInfo");
-    if (getAgpsCbInfo == nullptr) {
-        LOC_LOGE("%s]: Failed to get method LocNetIfaceAgps_getStatusCb", __func__);
-        dlclose(handle);
-        return;
+    LocAgpsGetAgpsCbInfo getAgpsCbInfo =
+        (LocAgpsGetAgpsCbInfo)dlGetSymFromLib(handle, "libloc_net_iface.so",
+            "LocNetIfaceAgps_getAgpsCbInfo");
+    // Below step is to make sure we init nativeAgpsHandler
+    // for Android platforms only
+    AgpsCbInfo cbInfo = {};
+    if (nullptr != getAgpsCbInfo) {
+        cbInfo = getAgpsCbInfo(agpsOpenResultCb, agpsCloseResultCb, this);
+    } else {
+        cbInfo = mNativeAgpsHandler.getAgpsCbInfo();
     }
-
-    AgpsCbInfo& cbInfo = getAgpsCbInfo(agpsOpenResultCb, agpsCloseResultCb, this);
 
     if (cbInfo.statusV4Cb == nullptr) {
         LOC_LOGE("%s]: statusV4Cb is nullptr!", __func__);

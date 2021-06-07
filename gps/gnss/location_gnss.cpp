@@ -66,12 +66,12 @@ static void agpsDataConnOpen(AGpsExtType agpsType, const char* apnName, int apnL
 static void agpsDataConnClosed(AGpsExtType agpsType);
 static void agpsDataConnFailed(AGpsExtType agpsType);
 static void getDebugReport(GnssDebugReport& report);
-static void updateConnectionStatus(bool connected, int8_t type, bool roaming = false,
-                                   NetworkHandle networkHandle = NETWORK_HANDLE_UNKNOWN);
+static void updateConnectionStatus(bool connected, int8_t type, bool roaming,
+                                   NetworkHandle networkHandle, string& apn);
 static void getGnssEnergyConsumed(GnssEnergyConsumedCallback energyConsumedCb);
 static void enableNfwLocationAccess(bool enable);
 static void nfwInit(const NfwCbInfo& cbInfo);
-static void getPowerStateChanges(void* powerStateCb);
+static void getPowerStateChanges(std::function<void(bool)> powerStateCb);
 
 static void odcpiInit(const OdcpiRequestCallback& callback, OdcpiPrioritytype priority);
 static void odcpiInject(const Location& location);
@@ -88,6 +88,7 @@ static uint32_t gnssUpdateSvConfig(const GnssSvTypeConfig& svTypeConfig,
 static uint32_t gnssResetSvConfig();
 static uint32_t configLeverArm(const LeverArmConfigInfo& configInfo);
 static uint32_t configRobustLocation(bool enable, bool enableForE911);
+static bool isSS5HWEnabled();
 
 static const GnssInterface gGnssInterface = {
     sizeof(GnssInterface),
@@ -134,6 +135,7 @@ static const GnssInterface gGnssInterface = {
     gnssResetSvConfig,
     configLeverArm,
     configRobustLocation,
+    isSS5HWEnabled,
 };
 
 #ifndef DEBUG_X86
@@ -342,10 +344,11 @@ static void getDebugReport(GnssDebugReport& report) {
 }
 
 static void updateConnectionStatus(bool connected, int8_t type,
-                                   bool roaming, NetworkHandle networkHandle) {
+                                   bool roaming, NetworkHandle networkHandle,
+                                   string& apn) {
     if (NULL != gGnssAdapter) {
         gGnssAdapter->getSystemStatus()->eventConnectionStatus(
-                connected, type, roaming, networkHandle);
+                connected, type, roaming, networkHandle, apn);
     }
 }
 
@@ -388,7 +391,8 @@ static void nfwInit(const NfwCbInfo& cbInfo) {
         gGnssAdapter->initNfwCommand(cbInfo);
     }
 }
-static void getPowerStateChanges(void* powerStateCb)
+
+static void getPowerStateChanges(std::function<void(bool)> powerStateCb)
 {
     if (NULL != gGnssAdapter) {
         gGnssAdapter->getPowerStateChangesCommand(powerStateCb);
@@ -455,6 +459,13 @@ static uint32_t configLeverArm(const LeverArmConfigInfo& configInfo){
     } else {
         return 0;
     }
+}
+
+static bool isSS5HWEnabled() {
+    if (NULL != gGnssAdapter) {
+        return gGnssAdapter->isSS5HWEnabled();
+    }
+    return false;
 }
 
 static uint32_t configRobustLocation(bool enable, bool enableForE911){

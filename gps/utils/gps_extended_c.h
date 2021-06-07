@@ -51,22 +51,8 @@ struct timespec32_t {
 extern "C" {
 #endif /* __cplusplus */
 
-/** Location has valid source information. */
-#define LOCATION_HAS_SOURCE_INFO   0x0020
-/** LocGpsLocation has valid "is indoor?" flag */
-#define LOC_GPS_LOCATION_HAS_IS_INDOOR   0x0040
-/** LocGpsLocation has valid floor number */
-#define LOC_GPS_LOCATION_HAS_FLOOR_NUMBER   0x0080
-/** LocGpsLocation has valid map URL*/
-#define LOC_GPS_LOCATION_HAS_MAP_URL   0x0100
-/** LocGpsLocation has valid map index */
-#define LOC_GPS_LOCATION_HAS_MAP_INDEX   0x0200
 
 #define GNSS_INVALID_JAMMER_IND 0x7FFFFFFF
-
-/** Sizes for indoor fields */
-#define GPS_LOCATION_MAP_URL_SIZE 400
-#define GPS_LOCATION_MAP_INDEX_SIZE 16
 
 /** Position source is ULP */
 #define ULP_LOCATION_IS_FROM_HYBRID   0x0001

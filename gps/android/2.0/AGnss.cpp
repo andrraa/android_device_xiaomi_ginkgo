@@ -180,6 +180,11 @@ Return<bool> AGnss::setServer(V2_0::IAGnssCallback::AGnssType type,
         return false;
     }
 
+    if (nullptr == hostname.c_str()) {
+       LOC_LOGe("server hostName is null!");
+       return true;
+    }
+
     GnssConfig config;
     memset(&config, 0, sizeof(GnssConfig));
     config.size = sizeof(GnssConfig);

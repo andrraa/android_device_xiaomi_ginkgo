@@ -1,4 +1,4 @@
-/* Copyright (c) 2017-2018, The Linux Foundation. All rights reserved.
+/* Copyright (c) 2020, The Linux Foundation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are
@@ -26,52 +26,39 @@
  * IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
+#ifndef NATIVEAGPSHANDLER_H
+#define NATIVEAGPSHANDLER_H
 
-#ifndef MEASUREMENT_API_CLINET_H
-#define MEASUREMENT_API_CLINET_H
-
-#include <mutex>
-#include <android/hardware/gnss/1.0/IGnssMeasurement.h>
-#include <android/hardware/gnss/1.0/IGnssMeasurementCallback.h>
-#include <LocationAPIClientBase.h>
-#include <hidl/Status.h>
+#include <cinttypes>
+#include <string.h>
 #include <gps_extended_c.h>
+#include <IDataItemObserver.h>
+#include <IDataItemCore.h>
+#include <IOsObserver.h>
 
-namespace android {
-namespace hardware {
-namespace gnss {
-namespace V1_0 {
-namespace implementation {
+using namespace std;
+using loc_core::IOsObserver;
+using loc_core::IDataItemObserver;
+using loc_core::IDataItemCore;
 
-using ::android::sp;
+class GnssAdapter;
 
-class MeasurementAPIClient : public LocationAPIClientBase
-{
+class NativeAgpsHandler : public IDataItemObserver {
 public:
-    MeasurementAPIClient();
-    MeasurementAPIClient(const MeasurementAPIClient&) = delete;
-    MeasurementAPIClient& operator=(const MeasurementAPIClient&) = delete;
-
-    // for GpsMeasurementInterface
-    Return<V1_0::IGnssMeasurement::GnssMeasurementStatus> measurementSetCallback(
-            const sp<V1_0::IGnssMeasurementCallback>& callback);
-    void measurementClose();
-    Return<IGnssMeasurement::GnssMeasurementStatus> startTracking();
-
-    // callbacks we are interested in
-    void onGnssMeasurementsCb(GnssMeasurementsNotification gnssMeasurementsNotification) final;
-
+    NativeAgpsHandler(IOsObserver* sysStatObs, GnssAdapter& adapter);
+    ~NativeAgpsHandler();
+    AgpsCbInfo getAgpsCbInfo();
+    // IDataItemObserver overrides
+    virtual void notify(const list<IDataItemCore*>& dlist);
+    inline virtual void getName(string& name);
 private:
-    virtual ~MeasurementAPIClient();
-    std::mutex mMutex;
-    sp<V1_0::IGnssMeasurementCallback> mGnssMeasurementCbIface;
-
-    bool mTracking;
+    static NativeAgpsHandler* sLocalHandle;
+    static void agnssStatusIpV4Cb(AGnssExtStatusIpV4 statusInfo);
+    void processATLRequestRelease(AGnssExtStatusIpV4 statusInfo);
+    IOsObserver* mSystemStatusObsrvr;
+    bool mConnected;
+    string mApn;
+    GnssAdapter& mAdapter;
 };
 
-}  // namespace implementation
-}  // namespace V1_0
-}  // namespace gnss
-}  // namespace hardware
-}  // namespace android
-#endif // MEASUREMENT_API_CLINET_H
+#endif // NATIVEAGPSHANDLER_H
