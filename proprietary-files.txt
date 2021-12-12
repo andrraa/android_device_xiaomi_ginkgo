@@ -1,4 +1,4 @@
-# Device proprietary files - from ginkgo MIUI V12.0.5.0.QCOMIXM package, unless pinned
+# Device proprietary files - from ginkgo MIUI V12.0.6.0.QCOMIXM package, unless pinned
 
 # ADSP
 vendor/bin/adsprpcd
