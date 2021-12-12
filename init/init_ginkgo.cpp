@@ -41,8 +41,8 @@ void vendor_load_properties()
 {
     string device, model;
 
-    string fp = "Xiaomi/dipper/dipper:8.1.0/OPM1.171019.011/V9.5.5.0.OEAMIFA:user/release-keys";
-    string desc = "dipper-user 8.1.0 OPM1.171019.011 V9.5.5.0.OEAMIFA release-keys";
+    string fp = "google/walleye/walleye:8.1.0/OPM1.171019.011/4448085:user/release-keys";
+    string desc = "walleye-user 8.1.0 OPM1.171019.011 4448085 release-keys";
 
     string region = GetProperty("ro.boot.hwc", "");
     string hwversion = GetProperty("ro.boot.hwversion", "");
